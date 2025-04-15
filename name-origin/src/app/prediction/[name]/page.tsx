@@ -13,21 +13,19 @@ const getPredictedCountry = async (name: string) => {
   return res.json();
 }
 
-interface Params {
-  params: { name: string };
-}
+export default async function Page({ params }: { params: Promise<{ name: string }> }) {
+  const { name } = await params;
 
-export default async function Page({ params }: Params) {
-  const ageData = getPredictedAge(params.name);
-  const genderData = getPredictedGender(params.name);
-  const countryData = getPredictedCountry(params.name);
+  const ageData = getPredictedAge(name);
+  const genderData = getPredictedGender(name);
+  const countryData = getPredictedCountry(name);
   const [age, gender, country] = await Promise.all([ageData, genderData, countryData]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Results for {params.name}
+            Results for {name}
           </h1>
           <p className="text-gray-600">Here are your prediction results</p>
         </div>
